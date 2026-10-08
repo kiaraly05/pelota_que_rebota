@@ -3,12 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pelota que rebota</title>
+    <title>Pelotita Loca</title>
+    <style>
+        /* reset: sin márgenes, sin scrollbars, canvas a pantalla completa */
+        * { margin: 0; padding: 0; }
+        html, body { width: 100%; height: 100%; overflow: hidden; }
+        body { background: #12121a; }
+        h1 {
+            position: fixed;
+            top: 10px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            font-family: system-ui, sans-serif;
+            font-size: 28px;
+            color: #fff;
+            text-shadow: 0 2px 6px rgba(0, 0, 0, .45);
+            pointer-events: none;   /* que no bloquee el hover de la pelota */
+            z-index: 10;
+        }
+    </style>
     <script src="https://cdn.jsdelivr.net/npm/p5@2.3.4/lib/p5.js"></script>
+    <!-- Firefox/Safari no implementan AudioParam.cancelAndHoldAtTime, que Tone.js
+         (dentro de p5.sound) usa en cada rampa. El polyfill debe definirse ANTES
+         de cargar p5.sound para que su detección de soporte lo tenga en cuenta. -->
+    <script>
+        if (typeof AudioParam !== "undefined" && !AudioParam.prototype.cancelAndHoldAtTime) {
+            AudioParam.prototype.cancelAndHoldAtTime = function (cancelTime) {
+                const value = this.value;
+                this.cancelScheduledValues(cancelTime);
+                this.setValueAtTime(value, cancelTime);
+                return this;
+            };
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/p5.sound@0.4.1/dist/p5.sound.min.js"></script>
     <script src="sketch.js"></script>
 </head>
 <body>
-    <h1>Pelota que rebota</h1>
-    
+    <h1>Pelotita Loca</h1>
 </body>
 </html>
